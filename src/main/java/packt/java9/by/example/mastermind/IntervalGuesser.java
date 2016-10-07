@@ -7,7 +7,7 @@ public class IntervalGuesser extends UniqueGuesser implements Runnable {
 
     private final Guess end;
     private Guess lastGuess;
-    private final BlockingQueue guessQueue;
+    private final BlockingQueue<Guess> guessQueue;
 
     public IntervalGuesser(Table table, Guess start, Guess end, BlockingQueue<Guess> guessQueue) {
         super(table);

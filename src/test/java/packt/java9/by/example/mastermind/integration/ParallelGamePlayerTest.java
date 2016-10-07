@@ -134,7 +134,7 @@ public class ParallelGamePlayerTest {
             }
         }
         Guess guess = new Guess(colors);
-        while (!guess.isUnique()) {
+        while (guess.isNotUnique()) {
             guess = guess.nextGuess(manager);
         }
         return guess;

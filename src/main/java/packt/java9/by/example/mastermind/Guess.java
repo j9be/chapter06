@@ -107,9 +107,9 @@ public class Guess {
     }
 
     /**
-     * @return true if the guess does not contain any color more than once
+     * @return false if the guess does not contain any color more than once
      */
-    public boolean isUnique() {
+    public boolean isNotUnique() {
         if (uniquenessWasNotCalculated) {
             final Set<Color> alreadyPresent = new HashSet<>();
             unique = true;
@@ -122,7 +122,7 @@ public class Guess {
             }
             uniquenessWasNotCalculated = false;
         }
-        return unique;
+        return !unique;
     }
 
     @Override
