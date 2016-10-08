@@ -1,5 +1,8 @@
 package packt.java9.by.example.mastermind;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -9,13 +12,15 @@ public class Guess {
     private final Color[] colors;
     private boolean uniquenessWasNotCalculated = true;
     private boolean unique;
+    private static final Logger log = LoggerFactory.getLogger(Guess.class);
 
     public Guess(Color[] colors) {
         this.colors = Arrays.copyOf(colors, colors.length);
     }
 
-    public Color getColor(int i) {
-        return colors[i];
+    public Color getColor(int column) {
+        log.debug("size of colors array in this guess is {}",colors.length);
+        return colors[column];
     }
 
     public int nrOfColumns() {

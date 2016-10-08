@@ -21,17 +21,20 @@ public class Game {
         return positionMatch == nrOfColumns;
     }
 
-
-    public Row addNewGuess(Guess guess) {
+    public Row addGuess(Guess guess, int full, int partial) {
         assertNotFinished();
-        final int full = secret.nrOfFullMatches(guess);
-        final int partial = secret.nrOfPartialMatches(guess);
-        final Row row = new Row(guess,full,partial);
+        final Row row = new Row(guess, full, partial);
         table.addRow(row);
         if (itWasAWinningGuess(full)) {
             finished = true;
         }
         return row;
+    }
+
+    public Row addNewGuess(Guess guess) {
+        final int full = secret.nrOfFullMatches(guess);
+        final int partial = secret.nrOfPartialMatches(guess);
+        return addGuess(guess, full, partial);
     }
 
     private void assertNotFinished() {
@@ -42,5 +45,9 @@ public class Game {
 
     public boolean isFinished() {
         return finished;
+    }
+
+    public Table getTable() {
+        return table;
     }
 }

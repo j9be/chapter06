@@ -33,4 +33,16 @@ public class Row {
         return guess.toString() + " " + full + "/" + partial;
     }
 
+    public int getFull() {
+        return full;
+    }
+
+    public int getPartial() {
+        return partial;
+    }
+
+    public Color getColor(int column) {
+        return guess.getColor(column);
+    }
+
 }
