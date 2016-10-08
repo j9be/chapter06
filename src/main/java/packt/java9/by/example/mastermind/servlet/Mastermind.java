@@ -32,7 +32,7 @@ public class Mastermind extends HttpServlet {
         Game game = buildGameFromRequest(request, manager, table);
         Guesser guesser = new UniqueGuesser(table);
         Guess newGuess = guesser.guess();
-        if (newGuess == Guess.none) {
+        if (game.isFinished() || newGuess == Guess.none) {
             displayGameOver(response,table);
         } else {
             log.debug("Adding new guess {} to the game", newGuess);
@@ -46,7 +46,7 @@ public class Mastermind extends HttpServlet {
         PrintWriter out = response.getWriter();
         out.println(tableToHtml(table));
         out.println("</form>");
-        out.println("Game Over");
+        out.println("Game finished, no more guesses");
         out.println("</body></head></html>");
     }
 
