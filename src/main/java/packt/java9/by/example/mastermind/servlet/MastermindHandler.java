@@ -30,23 +30,14 @@ public class MastermindHandler {
     ColorManager manager;
     @Inject
     Guesser guesser;
-    @Inject
-    GameSessionSaver sessionSaver;
 
-    private boolean useSession;
     private static Logger log = LoggerFactory.getLogger(MastermindHandler.class);
 
     public void handle(HttpServletRequest request,
                        HttpServletResponse response)
             throws ServletException, IOException {
 
-        useSession = request.getParameter("use_session") != null;
-        Game game;
-        if (useSession) {
-            game = buildGameFromSessionAndRequest(request);
-        } else {
-            game = buildGameFromRequest(request);
-        }
+        Game game = buildGameFromRequest(request);
         Guess newGuess = guesser.guess();
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
@@ -55,22 +46,19 @@ public class MastermindHandler {
         } else {
             log.debug("Adding new guess {} to the game", newGuess);
             game.addGuess(newGuess, 0, 0);
-            if (useSession) {
-                sessionSaver.save(request.getSession());
-            }
             displayGame(out);
         }
         bodyEnd(out);
     }
 
     private void displayGameOver(PrintWriter out) throws IOException {
-        out.println(html.tableToHtml(useSession));
+        out.println(html.tableToHtml());
         out.println("</form>");
         out.println("Game finished, no more guesses");
     }
 
     private void displayGame(PrintWriter out) throws IOException {
-        out.println(html.tableToHtml(useSession));
+        out.println(html.tableToHtml());
         out.println(html.tag("input", "type", "submit", "value", "submit"));
         out.println("</form>");
 
@@ -78,21 +66,6 @@ public class MastermindHandler {
 
     private void bodyEnd(PrintWriter out) {
         out.println("</body></head></html>");
-    }
-
-    private Game buildGameFromSessionAndRequest(HttpServletRequest request) {
-        Game game = buildGameFromMap(sessionSaver.restore(request.getSession()));
-        Map<String, String> params = toMap(request);
-        int row = getLastRowIndex(params);
-        log.debug("last row is {}", row);
-        if (row >= 0) {
-            final int full = Integer.parseInt(params.get(html.paramNameFull(row)));
-            final int partial = Integer.parseInt(params.get(html.paramNamePartial(row)));
-            log.debug("setting full {} and partial {} for row {}", full, partial, row);
-            table.setPartial(row, partial);
-            table.setFull(row, full);
-        }
-        return game;
     }
 
     private static final int MAX_ROWS = 10;
@@ -104,7 +77,7 @@ public class MastermindHandler {
                 row = i;
             }
         }
-        log.debug("last row is {}",row);
+        log.debug("last row is {}", row);
         return row;
     }
 
