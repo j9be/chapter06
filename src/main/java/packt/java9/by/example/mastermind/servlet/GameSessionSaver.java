@@ -23,7 +23,7 @@ public class GameSessionSaver {
     }
 
     public void reset(HttpSession session) {
-        session.setAttribute(STATE_NAME,null);
+        session.removeAttribute(STATE_NAME);
     }
 
     public Map<String,String> restore(HttpSession session){
