@@ -6,8 +6,17 @@ package packt.java9.by.example.mastermind;
  */
 public class Row {
     protected final Guess guess;
-    protected final int full;
-    protected final int partial;
+    protected int full;
+
+    public void setFull(int full) {
+        this.full = full;
+    }
+
+    public void setPartial(int partial) {
+        this.partial = partial;
+    }
+
+    protected int partial;
     public static final Row none = new Row(Guess.none, 0, 0);
 
     public Row(Guess guess, int full, int partial) {

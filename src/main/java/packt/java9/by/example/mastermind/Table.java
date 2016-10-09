@@ -3,12 +3,16 @@ package packt.java9.by.example.mastermind;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Represents the state of the table of the game.
  */
+@Singleton
 public class Table {
     final ColorManager manager;
     final int nrColumns;
@@ -29,11 +33,24 @@ public class Table {
         return rows.get(row).getPartial();
     }
 
-    public Table(int nrColumns, ColorManager manager) {
+    public void setFull(int row, int full) {
+        rows.get(row).setFull(full);
+    }
+
+    public void setPartial(int row, int partial) {
+        rows.get(row).setPartial(partial);
+    }
+
+    @Inject
+    public Table(@Named("nrColumns") int nrColumns, ColorManager manager) {
+        log.debug("table is created with {} columns and {} colorManager", nrColumns, manager);
         this.nrColumns = nrColumns;
         this.rows = new CopyOnWriteArrayList<>();
         this.manager = manager;
+    }
 
+    public ColorManager getManager() {
+        return manager;
     }
 
     public int nrOfColumns() {

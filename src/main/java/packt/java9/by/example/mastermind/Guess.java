@@ -19,7 +19,6 @@ public class Guess {
     }
 
     public Color getColor(int column) {
-        log.debug("size of colors array in this guess is {}",colors.length);
         return colors[column];
     }
 

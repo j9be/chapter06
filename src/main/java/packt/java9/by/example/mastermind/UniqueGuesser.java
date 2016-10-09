@@ -1,10 +1,13 @@
 package packt.java9.by.example.mastermind;
 
+import javax.inject.Inject;
+
 /**
  * A unique guesser creates guesses that do not use a color twice in a row.
  */
 public class UniqueGuesser extends Guesser {
 
+    @Inject
     public UniqueGuesser(Table table) {
         super(table);
     }

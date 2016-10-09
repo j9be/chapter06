@@ -2,6 +2,7 @@ package packt.java9.by.example.mastermind.integration;
 
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import packt.java9.by.example.mastermind.*;
 import packt.java9.by.example.mastermind.lettered.LetteredColorFactory;
@@ -27,6 +28,7 @@ public class IntegrationTest {
     }
 
     @Test
+    @Ignore
     public void testSimpleGame() {
         Table table = new Table(NR_COLUMNS, manager);
         Guess secret = createSecret();
