@@ -67,8 +67,14 @@ public class HtmlTools {
             for (int column = 0; column < NR_COLUMNS; column++) {
                 sb.append(colorToHtml(table.getColor(row, column), row, column, useSession));
             }
-            sb.append(inputBox(paramNameFull(row), "" + table.getFull(row)));
-            sb.append(inputBox(paramNamePartial(row), "" + table.getPartial(row)));
+            if (useSession && row < table.nrOfRows() - 1) {
+                sb.append("" + table.getFull(row));
+                sb.append(tag("div", "class", "spacer")).append(tag("/div"));
+                sb.append("" + table.getPartial(row));
+            } else {
+                sb.append(inputBox(paramNameFull(row), "" + table.getFull(row)));
+                sb.append(inputBox(paramNamePartial(row), "" + table.getPartial(row)));
+            }
             sb.append("<p>");
         }
         return sb.toString();
