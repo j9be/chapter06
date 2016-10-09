@@ -32,15 +32,12 @@ public class HtmlTools {
         return tag("input", "type", "text", "name", name, "value", value, "size", "1");
     }
 
-    public String colorToHtml(Color color, int row, int column, boolean useSession) {
-        return (useSession ? "" : tag("input", "type", "hidden", "name", paramNameGuess(row, column),
-                "value", color.toString())) +
-                tag("div", "class", "color" + color) +
+    public String colorToHtml(Color color, int row, int column) {
+        return tag("div", "class", "color" + color) +
                 tag("/div") +
                 tag("div", "class", "spacer") +
                 tag("/div");
     }
-
 
     public String paramNameFull(int row) {
         return "full" + row;
@@ -54,20 +51,19 @@ public class HtmlTools {
         return "guess" + row + column;
     }
 
-    public String tableToHtml(boolean useSession) {
+    public String tableToHtml() {
         StringBuilder sb = new StringBuilder();
         sb.append("<html><head>");
         sb.append("<link rel=\"stylesheet\" type=\"text/css\" href=\"colors.css\">");
         sb.append("<title>Mastermind guessing</title>");
         sb.append("<body>");
-        String useSessionParam = useSession ? "?use_session=1" : "";
-        sb.append(tag("form", "method", "POST", "action", "master" + useSessionParam));
+        sb.append(tag("form", "method", "POST", "action", "master" ));
 
         for (int row = 0; row < table.nrOfRows(); row++) {
             for (int column = 0; column < NR_COLUMNS; column++) {
-                sb.append(colorToHtml(table.getColor(row, column), row, column, useSession));
+                sb.append(colorToHtml(table.getColor(row, column), row, column));
             }
-            if (useSession && row < table.nrOfRows() - 1) {
+            if ( row < table.nrOfRows() - 1) {
                 sb.append("" + table.getFull(row));
                 sb.append(tag("div", "class", "spacer")).append(tag("/div"));
                 sb.append("" + table.getPartial(row));

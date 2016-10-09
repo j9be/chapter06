@@ -33,20 +33,13 @@ public class MastermindHandler {
     @Inject
     GameSessionSaver sessionSaver;
 
-    private boolean useSession;
     private static Logger log = LoggerFactory.getLogger(MastermindHandler.class);
 
     public void handle(HttpServletRequest request,
                        HttpServletResponse response)
             throws ServletException, IOException {
 
-        useSession = request.getParameter("use_session") != null;
-        Game game;
-        if (useSession) {
-            game = buildGameFromSessionAndRequest(request);
-        } else {
-            game = buildGameFromRequest(request);
-        }
+        Game game = buildGameFromSessionAndRequest(request);
         Guess newGuess = guesser.guess();
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
@@ -55,22 +48,20 @@ public class MastermindHandler {
         } else {
             log.debug("Adding new guess {} to the game", newGuess);
             game.addGuess(newGuess, 0, 0);
-            if (useSession) {
-                sessionSaver.save(request.getSession());
-            }
+            sessionSaver.save(request.getSession());
             displayGame(out);
         }
         bodyEnd(out);
     }
 
     private void displayGameOver(PrintWriter out) throws IOException {
-        out.println(html.tableToHtml(useSession));
+        out.println(html.tableToHtml());
         out.println("</form>");
         out.println("Game finished, no more guesses");
     }
 
     private void displayGame(PrintWriter out) throws IOException {
-        out.println(html.tableToHtml(useSession));
+        out.println(html.tableToHtml());
         out.println(html.tag("input", "type", "submit", "value", "submit"));
         out.println("</form>");
 
@@ -91,6 +82,9 @@ public class MastermindHandler {
             log.debug("setting full {} and partial {} for row {}", full, partial, row);
             table.setPartial(row, partial);
             table.setFull(row, full);
+            if( full == table.nrOfColumns() ){
+                game.setFinished();
+            }
         }
         return game;
     }
@@ -104,12 +98,8 @@ public class MastermindHandler {
                 row = i;
             }
         }
-        log.debug("last row is {}",row);
+        log.debug("last row is {}", row);
         return row;
-    }
-
-    private Game buildGameFromRequest(HttpServletRequest request) {
-        return buildGameFromMap(toMap(request));
     }
 
     private Map<String, String> toMap(HttpServletRequest request) {

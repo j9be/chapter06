@@ -17,6 +17,8 @@ public class Mastermind extends HttpServlet {
     public void doGet(HttpServletRequest request,
                       HttpServletResponse response)
             throws ServletException, IOException {
+        GameSessionSaver sessionSaver = new GameSessionSaver();
+        sessionSaver.reset(request.getSession());
         doPost(request, response);
     }
 

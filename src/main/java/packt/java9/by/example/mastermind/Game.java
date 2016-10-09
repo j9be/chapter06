@@ -8,6 +8,11 @@ public class Game {
 
     final Table table;
     final private Guess secret;
+
+    public void setFinished() {
+        this.finished = true;
+    }
+
     boolean finished = false;
     final int nrOfColumns;
 

@@ -22,6 +22,10 @@ public class GameSessionSaver {
         session.setAttribute(STATE_NAME,params);
     }
 
+    public void reset(HttpSession session) {
+        session.setAttribute(STATE_NAME,null);
+    }
+
     public Map<String,String> restore(HttpSession session){
         Map<String,String> map= (Map<String,String>)session.getAttribute(STATE_NAME);
         if( map == null ){
