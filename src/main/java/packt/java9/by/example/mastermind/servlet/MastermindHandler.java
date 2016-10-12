@@ -11,8 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class MastermindHandler {
 
@@ -87,14 +87,11 @@ public class MastermindHandler {
 
     private Map<String, String> toMap(HttpServletRequest request) {
         log.debug("converting request to map");
-        Map<String, String> map = new HashMap<>();
-        for (Map.Entry entry : request.getParameterMap().entrySet()) {
-            if (entry.getValue() != null) {
-                log.debug("put({},{})", (String) entry.getKey(), ((String[]) entry.getValue())[0]);
-                map.put((String) entry.getKey(), ((String[]) entry.getValue())[0]);
-            }
-        }
-        return map;
+        return request.getParameterMap().entrySet().
+                stream().collect(
+                        Collectors.toMap(
+                                Map.Entry::getKey,
+                                e -> e.getValue()[0]));
     }
 
     private Game buildGameFromMap(Map<String, String> params) {
