@@ -1,13 +1,13 @@
 package packt.java9.by.example.mastermind;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import java.util.HashMap;
 import java.util.Map;
+import java.lang.System.Logger;
+
+import static java.lang.System.Logger.Level.DEBUG;
 
 @Singleton
 public class ColorManager {
@@ -15,11 +15,11 @@ public class ColorManager {
     protected final Map<Color, Color> successor = new HashMap<>();
     private Color first;
     private final ColorFactory factory;
-    private static final Logger log = LoggerFactory.getLogger(ColorManager.class);
+    private static final Logger log = System.getLogger(ColorManager.class.getName());
 
     @Inject
     public ColorManager(@Named("nrColors") int nrColors, ColorFactory factory) {
-        log.debug("creating colorManager for {} colors",nrColors);
+        log.log(DEBUG,"creating colorManager for {0} colors",nrColors);
         this.nrColors = nrColors;
         this.factory = factory;
         createOrdering();
